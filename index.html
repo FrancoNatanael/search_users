@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub search</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://unpkg.com/vue@3"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- Favorites -->
+        <div class="favorites">
+            <transition-group name="list">
+            <div class="favorite" v-for="favorite in all" :key="favorite.id">
+                <a @click.prevent="verFavorito(favorite)" href="">
+                    <img :src="favorite.avatar_url" :alt="favorite.name" class="favorite__avatar">
+                </a>
+            </div>
+        </transition-group>
+        </div>
+
+        <!-- Content -->
+        <article class="content">
+            <h1 class="content__title">Search GitHub users</h1>
+
+            <!-- Search -->
+            <form class="search" v-on:submit.prevent="buscar">
+                <input v-model="search" type="text" class="search__input" required placeholder="Search GitHub users">
+                <input type="submit" class="search__submit" value="Search">
+            </form>
+
+            <!-- Result -->
+        <Transition v-if="result">
+            <div class="result" v-if="result">
+                <a v-if="isFavorite" href="#" class="result_toggle-favorite" style="color: white;" @click="quitarFavorito">Sacar de fav</a>
+                <a  v-else href="#" class="result_toggle-favorite" style="color: white;" @click="agregarFavorito">Agregar a fav</a>
+                <h2 class="result_name">{{result.name}}</h2>
+                <img v-bind:src="result.avatar_url" :alt="result.name" class="favorite__avatar">
+                <p class="result__bio">{{result.created_at}}</p>
+            </div>
+            
+         </Transition>
+         <p v-else>Waiting for search...</p>
+            <!-- Error -->
+            <div class="result__error" v-if="error">{{error}}</div>
+            
+        </article>
+    </div>
+    <script src="js/main.js"></script>
+  
+</body>
+
+</html>
